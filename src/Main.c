@@ -42,7 +42,8 @@ void Update(AlxWindow* w){
 	TransformedView_Output(&tv,(Vec2){ GetWidth(),GetHeight() });
 
     if(Stroke(ALX_KEY_SPACE).DOWN){
-        HillSharper_2D_Iter(HILLSHARPER_TYPE_WBL,buffer,BUFFER_W,BUFFER_H,w->ElapsedTime,0.0,1.0);
+        //HillSharper_2D_Iter(HILLSHARPER_TYPE_CUB,buffer,BUFFER_W,BUFFER_H,w->ElapsedTime);
+        HillSharper_N_2D_Iter(HILLSHARPER_TYPE_N_VAVG,buffer,BUFFER_W,BUFFER_H,w->ElapsedTime * 1);
     }
 
 	Clear(BLACK);
