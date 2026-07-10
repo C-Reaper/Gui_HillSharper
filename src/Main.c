@@ -7,7 +7,7 @@
 #define BUFFER_W    1000
 #define BUFFER_H    1000
 double* buffer = NULL;
-u64 iterations = 0;
+HillSharper_Type type = 0;
 TransformedView tv;
 
 void Setup(AlxWindow* w){
@@ -41,9 +41,23 @@ void Update(AlxWindow* w){
 	TransformedView_HandlePanZoom(&tv,window.Strokes,(Vec2){ GetMouse().x,GetMouse().y });
 	TransformedView_Output(&tv,(Vec2){ GetWidth(),GetHeight() });
 
+    if(Stroke(ALX_KEY_R).PRESSED){
+        for (unsigned int y = 0; y < BUFFER_H; y += 1U) {
+            for (unsigned int x = 0; x < BUFFER_W; x += 1U) {
+                const unsigned int i = y * BUFFER_W + x;
+                buffer[i] = 0.5 * PerlinNoise_2D_Get(x,y) + 0.5;
+            }
+        }
+    }
     if(Stroke(ALX_KEY_SPACE).DOWN){
         //HillSharper_2D_Iter(HILLSHARPER_TYPE_CUB,buffer,BUFFER_W,BUFFER_H,w->ElapsedTime);
-        HillSharper_N_2D_Iter(HILLSHARPER_TYPE_N_VAVG,buffer,BUFFER_W,BUFFER_H,w->ElapsedTime * 1);
+        HillSharper_N_2D_Iter(type,buffer,BUFFER_W,BUFFER_H,w->ElapsedTime * 1);
+    }
+    if(Stroke(ALX_KEY_W).PRESSED){
+        if(type > 0U) type--;
+    }
+    if(Stroke(ALX_KEY_S).PRESSED){
+        type++;
     }
 
 	Clear(BLACK);
@@ -63,7 +77,7 @@ void Update(AlxWindow* w){
 		}
 	}
     
-    CStr_RenderAlxFontf(WINDOW_STD_ARGS,GetAlxFont(),0.0f,0.0f,RED,"IT: %d",iterations);
+    CStr_RenderAlxFontf(WINDOW_STD_ARGS,GetAlxFont(),0.0f,0.0f,RED,"T: %d",type);
 }
 
 void Delete(AlxWindow* w){
