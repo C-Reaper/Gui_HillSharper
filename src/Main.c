@@ -77,7 +77,7 @@ void Update(AlxWindow* w){
 		}
 	}
     
-    CStr_RenderAlxFontf(WINDOW_STD_ARGS,GetAlxFont(),0.0f,0.0f,RED,"T: %d",type);
+    CStr_RenderAlxFontf(WINDOW_STD_ARGS,GetAlxFont(),0.0f,0.0f,RED,"T: %d",(Number)type);
 }
 
 void Delete(AlxWindow* w){
